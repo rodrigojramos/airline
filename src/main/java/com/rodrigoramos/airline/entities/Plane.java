@@ -2,6 +2,9 @@ package com.rodrigoramos.airline.entities;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "tb_plane")
 public class Plane {
@@ -11,6 +14,9 @@ public class Plane {
     private Long id;
     private String name;
     private Integer seats;
+
+    @OneToMany(mappedBy = "plane")
+    private Set<Flight> flights = new HashSet<>();
 
     public Plane() {
     }
@@ -43,5 +49,9 @@ public class Plane {
 
     public void setSeats(Integer seats) {
         this.seats = seats;
+    }
+
+    public Set<Flight> getFlights() {
+        return flights;
     }
 }

@@ -2,6 +2,9 @@ package com.rodrigoramos.airline.entities;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "tb_passenger")
 public class Passenger {
@@ -14,6 +17,9 @@ public class Passenger {
     private String email;
     @Column(unique = true)
     private String document;
+
+    @OneToMany(mappedBy = "passenger")
+    private Set<Ticket> tickets = new HashSet<>();
 
     public Passenger() {
     }
@@ -55,5 +61,9 @@ public class Passenger {
 
     public void setDocument(String document) {
         this.document = document;
+    }
+
+    public Set<Ticket> getTickets() {
+        return tickets;
     }
 }

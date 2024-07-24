@@ -3,6 +3,8 @@ package com.rodrigoramos.airline.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_flight")
@@ -20,6 +22,9 @@ public class Flight {
     @ManyToOne
     @JoinColumn(name = "plane_id")
     private Plane plane;
+
+    @ManyToMany(mappedBy = "flights")
+    private Set<Ticket> tickets = new HashSet<>();
 
     public Flight() {
     }
@@ -87,5 +92,9 @@ public class Flight {
 
     public void setPlane(Plane plane) {
         this.plane = plane;
+    }
+
+    public Set<Ticket> getTickets() {
+        return tickets;
     }
 }

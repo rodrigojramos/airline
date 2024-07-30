@@ -3,9 +3,11 @@ package com.rodrigoramos.airline.service;
 import com.rodrigoramos.airline.dto.PassengerDTO;
 import com.rodrigoramos.airline.entities.Passenger;
 import com.rodrigoramos.airline.repositories.PassengerRepository;
+import com.rodrigoramos.airline.service.exceptions.DatabaseException;
 import com.rodrigoramos.airline.service.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +49,12 @@ public class PassengerService {
         if(!passengerRepository.existsById(id)) {
             throw new ResourceNotFoundException("Recurso não encontrado");
         }
-        passengerRepository.deleteById(id);
+        try {
+            passengerRepository.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha de integridade referencial");
+        }
     }
 
     private void copyDtoToEntity(PassengerDTO dto, Passenger entity) {

@@ -12,6 +12,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class FlightService {
 
@@ -23,6 +25,17 @@ public class FlightService {
         Flight flight = flightRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado"));
         return new FlightDTO(flight);
+    }
+
+    @Transactional(readOnly = true)
+    public List<FlightDTO> findAll() {
+        List<Flight> result = flightRepository.findAll();
+        return result.stream().map(x -> new FlightDTO(x)).toList();
+    }
+
+    public List<FlightDTO> findByDateAndDestination(String departure, String arrival, Integer d, Integer m, Integer y) {
+        List<Flight> result = flightRepository.searchFlightByDateAndDestination(departure, arrival, d, m, y);
+        return result.stream().map(x -> new FlightDTO(x)).toList();
     }
 
     @Transactional

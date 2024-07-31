@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/flight")
@@ -19,6 +20,21 @@ public class FlightController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<FlightDTO> findById(@PathVariable Long id) {
         FlightDTO dto = flightService.findById(id);
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FlightDTO>> findAll() {
+        List<FlightDTO> dto = flightService.findAll();
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping(value = "/{departure}/{arrival}/{d}-{m}-{y}")
+    public ResponseEntity<List<FlightDTO>> findByDateAndDestination(
+            @PathVariable String departure, @PathVariable String arrival,
+            @PathVariable Integer d, @PathVariable Integer m, @PathVariable Integer y
+    ) {
+        List<FlightDTO> dto = flightService.findByDateAndDestination(departure, arrival, d, m, y);
         return ResponseEntity.ok(dto);
     }
 

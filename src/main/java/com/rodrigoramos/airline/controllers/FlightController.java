@@ -2,6 +2,7 @@ package com.rodrigoramos.airline.controllers;
 
 import com.rodrigoramos.airline.dto.FlightDTO;
 import com.rodrigoramos.airline.service.FlightService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,14 +40,14 @@ public class FlightController {
     }
 
     @PostMapping
-    public ResponseEntity<FlightDTO> insert(@RequestBody FlightDTO dto) {
+    public ResponseEntity<FlightDTO> insert(@Valid @RequestBody FlightDTO dto) {
         dto = flightService.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<FlightDTO> update(@PathVariable Long id, @RequestBody FlightDTO dto) {
+    public ResponseEntity<FlightDTO> update(@PathVariable Long id, @Valid @RequestBody FlightDTO dto) {
         dto = flightService.update(id, dto);
         return ResponseEntity.ok(dto);
     }

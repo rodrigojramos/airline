@@ -1,13 +1,18 @@
 package com.rodrigoramos.airline.dto;
 
 import com.rodrigoramos.airline.entities.Passenger;
-import jakarta.persistence.Column;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.br.CPF;
 
 public class PassengerDTO {
 
     private Long id;
+    @NotBlank(message = "Campo requerido")
     private String name;
+    @Email(message = "Campo requerido")
     private String email;
+    @CPF
     private String document;
 
     public PassengerDTO(Long id, String name, String email, String document) {

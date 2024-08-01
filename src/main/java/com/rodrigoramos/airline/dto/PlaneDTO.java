@@ -1,10 +1,12 @@
 package com.rodrigoramos.airline.dto;
 
 import com.rodrigoramos.airline.entities.Plane;
+import jakarta.validation.constraints.NotBlank;
 
 public class PlaneDTO {
 
     private Long id;
+    @NotBlank(message = "Campo requerido")
     private String name;
     private Integer seats;
 

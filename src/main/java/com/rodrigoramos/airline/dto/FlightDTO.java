@@ -1,15 +1,20 @@
 package com.rodrigoramos.airline.dto;
 
 import com.rodrigoramos.airline.entities.Flight;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDateTime;
 
 public class FlightDTO {
 
     private Long id;
+    @NotBlank
     private String departure;
+    @NotBlank
     private String arrival;
     private LocalDateTime flightDay;
+    @Positive
     private Double price;
     private Integer availableSeats;
 

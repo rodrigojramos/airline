@@ -3,7 +3,7 @@ package com.rodrigoramos.airline.service;
 import com.rodrigoramos.airline.dto.FlightDTO;
 import com.rodrigoramos.airline.dto.TicketDTO;
 import com.rodrigoramos.airline.entities.Flight;
-import com.rodrigoramos.airline.entities.Passenger;
+import com.rodrigoramos.airline.entities.User;
 import com.rodrigoramos.airline.entities.Ticket;
 import com.rodrigoramos.airline.repositories.TicketRepository;
 import com.rodrigoramos.airline.service.exceptions.DatabaseException;
@@ -63,9 +63,9 @@ public class TicketService {
     private void copyDtoToEntity(TicketDTO dto, Ticket entity) {
         entity.setSeat(dto.getSeat());
 
-        Passenger passenger = new Passenger();
-        passenger.setId(dto.getPassenger().getId());
-        entity.setPassenger(passenger);
+        User user = new User();
+        user.setId(dto.getPassenger().getId());
+        entity.setPassenger(user);
 
         for (FlightDTO flyDto : dto.getFlights()) {
             Flight fly = new Flight();

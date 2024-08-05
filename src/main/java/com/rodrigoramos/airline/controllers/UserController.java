@@ -1,44 +1,46 @@
 package com.rodrigoramos.airline.controllers;
 
-import com.rodrigoramos.airline.dto.PassengerDTO;
-import com.rodrigoramos.airline.service.PassengerService;
+import com.rodrigoramos.airline.dto.UserDTO;
+import com.rodrigoramos.airline.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/passenger")
-public class PassengerController {
+@RequestMapping(value = "/user")
+public class UserController {
 
     @Autowired
-    private PassengerService passengerService;
+    private UserService userService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PassengerDTO> findById(@PathVariable Long id) {
-        PassengerDTO dto = passengerService.findById(id);
+    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+        UserDTO dto = userService.findById(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<PassengerDTO> insert(@Valid @RequestBody PassengerDTO dto) {
-        dto = passengerService.insert(dto);
+    public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO dto) {
+        dto = userService.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<PassengerDTO> update(@PathVariable Long id, @Valid @RequestBody PassengerDTO dto) {
-        dto = passengerService.update(id, dto);
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
+        dto = userService.update(id, dto);
         return ResponseEntity.ok(dto);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        passengerService.delete(id);
+        userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

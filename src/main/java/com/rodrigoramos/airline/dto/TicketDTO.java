@@ -11,7 +11,7 @@ public class TicketDTO {
     private Long id;
     private String seat;
 
-    private PassengerDTO passenger;
+    private UserDTO passenger;
 
     private Set<FlightDTO> flights = new HashSet<>();
 
@@ -24,7 +24,7 @@ public class TicketDTO {
         id = entity.getId();
         seat = entity.getSeat();
         if (entity.getPassenger() != null) {
-            passenger = new PassengerDTO(entity.getPassenger());
+            passenger = new UserDTO(entity.getPassenger());
         }
         for (Flight fly : entity.getFlights()) {
             flights.add(new FlightDTO(fly));
@@ -39,7 +39,7 @@ public class TicketDTO {
         return seat;
     }
 
-    public PassengerDTO getPassenger() {
+    public UserDTO getPassenger() {
         return passenger;
     }
 

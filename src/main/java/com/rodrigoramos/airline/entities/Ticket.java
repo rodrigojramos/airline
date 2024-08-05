@@ -15,8 +15,8 @@ public class Ticket {
     private String seat;
 
     @ManyToOne
-    @JoinColumn(name = "passenger_id")
-    private Passenger passenger;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToMany
     @JoinTable(name = "tb_ticket_flight",
@@ -48,12 +48,12 @@ public class Ticket {
         this.seat = seat;
     }
 
-    public Passenger getPassenger() {
-        return passenger;
+    public User getPassenger() {
+        return user;
     }
 
-    public void setPassenger(Passenger passenger) {
-        this.passenger = passenger;
+    public void setPassenger(User user) {
+        this.user = user;
     }
 
     public Set<Flight> getFlights() {

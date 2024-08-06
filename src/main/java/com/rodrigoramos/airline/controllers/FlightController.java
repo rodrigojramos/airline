@@ -41,6 +41,18 @@ public class FlightController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping(value = "/user/{id}")
+    public ResponseEntity<List<FlightDTO>> findAllFlightsByUser(@PathVariable Long id) {
+        List<FlightDTO> dto = flightService.findAllFlightsByUser(id);
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping(value = "/today-flights")
+    public ResponseEntity<List<FlightDTO>> findAllTodayFlights() {
+        List<FlightDTO> dto = flightService.findAllTodayFlights();
+        return ResponseEntity.ok(dto);
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<FlightDTO> insert(@Valid @RequestBody FlightDTO dto) {

@@ -3,6 +3,7 @@ package com.rodrigoramos.airline.service;
 import com.rodrigoramos.airline.dto.FlightDTO;
 import com.rodrigoramos.airline.entities.Flight;
 import com.rodrigoramos.airline.entities.Plane;
+import com.rodrigoramos.airline.projections.FlightProjection;
 import com.rodrigoramos.airline.repositories.FlightRepository;
 import com.rodrigoramos.airline.service.exceptions.DatabaseException;
 import com.rodrigoramos.airline.service.exceptions.ResourceNotFoundException;
@@ -35,6 +36,16 @@ public class FlightService {
 
     public List<FlightDTO> findByDateAndDestination(String departure, String arrival, Integer d, Integer m, Integer y) {
         List<Flight> result = flightRepository.searchFlightByDateAndDestination(departure, arrival, d, m, y);
+        return result.stream().map(x -> new FlightDTO(x)).toList();
+    }
+
+    public List<FlightDTO> findAllFlightsByUser(Long id) {
+        List<FlightProjection> result = flightRepository.searchAllFlightsByUser(id);
+        return result.stream().map(x -> new FlightDTO(x)).toList();
+    }
+
+    public List<FlightDTO> findAllTodayFlights() {
+        List<FlightProjection> result = flightRepository.searchTodayFlights();
         return result.stream().map(x -> new FlightDTO(x)).toList();
     }
 

@@ -1,11 +1,14 @@
 package com.rodrigoramos.airline.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rodrigoramos.airline.entities.Flight;
+import com.rodrigoramos.airline.projections.FlightProjection;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDateTime;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FlightDTO {
 
     private Long id;
@@ -39,6 +42,13 @@ public class FlightDTO {
         if(entity.getPlane() != null) {
             plane = new PlaneDTO(entity.getPlane());
         }
+    }
+
+    public FlightDTO(FlightProjection projection) {
+        id = projection.getId();
+        departure = projection.getDeparture();
+        arrival = projection.getArrival();
+        flightDay = projection.getFlightDay();
     }
 
     public Long getId() {

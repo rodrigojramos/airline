@@ -1,15 +1,19 @@
 package com.rodrigoramos.airline.service;
 
 import com.rodrigoramos.airline.dto.FlightDTO;
+import com.rodrigoramos.airline.dto.UserDTO;
 import com.rodrigoramos.airline.entities.Flight;
 import com.rodrigoramos.airline.entities.Plane;
 import com.rodrigoramos.airline.projections.FlightProjection;
+import com.rodrigoramos.airline.projections.PassengerListProjection;
 import com.rodrigoramos.airline.repositories.FlightRepository;
 import com.rodrigoramos.airline.service.exceptions.DatabaseException;
 import com.rodrigoramos.airline.service.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,9 +33,9 @@ public class FlightService {
     }
 
     @Transactional(readOnly = true)
-    public List<FlightDTO> findAll() {
-        List<Flight> result = flightRepository.findAll();
-        return result.stream().map(x -> new FlightDTO(x)).toList();
+    public Page<FlightDTO> findAll(Pageable pageable) {
+        Page<Flight> result = flightRepository.findAllByOrderByFlightDayAsc(pageable);
+        return result.map(FlightDTO::new);
     }
 
     public List<FlightDTO> findByDateAndDestination(String departure, String arrival, Integer d, Integer m, Integer y) {
@@ -47,6 +51,11 @@ public class FlightService {
     public List<FlightDTO> findAllTodayFlights() {
         List<FlightProjection> result = flightRepository.searchTodayFlights();
         return result.stream().map(x -> new FlightDTO(x)).toList();
+    }
+
+    public List<UserDTO> findPassengerList(Long id) {
+        List<PassengerListProjection> result = flightRepository.findPassengerList(id);
+        return result.stream().map(x -> new UserDTO(x)).toList();
     }
 
     @Transactional

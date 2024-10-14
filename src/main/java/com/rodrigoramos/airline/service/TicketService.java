@@ -5,6 +5,7 @@ import com.rodrigoramos.airline.dto.TicketDTO;
 import com.rodrigoramos.airline.entities.Flight;
 import com.rodrigoramos.airline.entities.User;
 import com.rodrigoramos.airline.entities.Ticket;
+import com.rodrigoramos.airline.repositories.FlightRepository;
 import com.rodrigoramos.airline.repositories.TicketRepository;
 import com.rodrigoramos.airline.service.exceptions.DatabaseException;
 import com.rodrigoramos.airline.service.exceptions.ResourceNotFoundException;
@@ -22,6 +23,9 @@ public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
 
+    @Autowired
+    private FlightRepository flightRepository;
+
     @Transactional(readOnly = true)
     public TicketDTO findById(Long id) {
         Ticket ticket = ticketRepository.findById(id).orElseThrow(
@@ -29,11 +33,37 @@ public class TicketService {
         return new TicketDTO(ticket);
     }
 
+    @Transactional(readOnly = true)
+    public List<TicketDTO> findTicketsByUserId(Long userId) {
+        List<Ticket> tickets = ticketRepository.findByUserIdOrderByFlightsFlightDayAsc(userId);
+        return tickets.stream().map(ticket -> new TicketDTO(ticket)).toList();
+    }
+
+    public List<String> findOccupiedSeatsByFlightId(Long flightId) {
+        return ticketRepository.findOccupiedSeatsByFlightId(flightId);
+    }
+
     @Transactional
     public TicketDTO insert(TicketDTO dto) {
         Ticket entity = new Ticket();
         copyDtoToEntity(dto, entity);
+
+        for (Flight flight : entity.getFlights()) {
+            if (flight.getAvailableSeats() == null) {
+                throw new IllegalStateException("Error: " + flight.getId());
+            }
+            if (flight.getAvailableSeats() <= 0) {
+                throw new IllegalStateException("Não há assentos disponíveis para voo " + flight.getId());
+            }
+        }
+
         entity = ticketRepository.save(entity);
+
+        for (Flight flight : entity.getFlights()) {
+            flight.toDecreaseAvailableSeats();
+            flightRepository.save(flight);
+        }
+
         return new TicketDTO(entity);
     }
 
@@ -70,8 +100,8 @@ public class TicketService {
         entity.setPassenger(user);
 
         for (FlightDTO flyDto : dto.getFlights()) {
-            Flight fly = new Flight();
-            fly.setId(flyDto.getId());
+            Flight fly = flightRepository.findById(flyDto.getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado " + flyDto.getId()));
             entity.getFlights().add(fly);
         }
     }

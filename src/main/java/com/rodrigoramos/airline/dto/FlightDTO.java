@@ -49,6 +49,7 @@ public class FlightDTO {
         departure = projection.getDeparture();
         arrival = projection.getArrival();
         flightDay = projection.getFlightDay();
+        availableSeats = projection.getAvailableSeats();
     }
 
     public Long getId() {
@@ -77,5 +78,9 @@ public class FlightDTO {
 
     public PlaneDTO getPlane() {
         return plane;
+    }
+
+    public void setAvailableSeats(Integer availableSeats) {
+        this.availableSeats = availableSeats;
     }
 }

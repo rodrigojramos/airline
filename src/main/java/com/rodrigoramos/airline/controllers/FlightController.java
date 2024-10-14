@@ -1,9 +1,12 @@
 package com.rodrigoramos.airline.controllers;
 
 import com.rodrigoramos.airline.dto.FlightDTO;
+import com.rodrigoramos.airline.dto.UserDTO;
 import com.rodrigoramos.airline.service.FlightService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +28,9 @@ public class FlightController {
         return ResponseEntity.ok(dto);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
-    public ResponseEntity<List<FlightDTO>> findAll() {
-        List<FlightDTO> dto = flightService.findAll();
+    public ResponseEntity<Page<FlightDTO>> findAll(Pageable pageable) {
+        Page<FlightDTO> dto = flightService.findAll(pageable);
         return ResponseEntity.ok(dto);
     }
 
@@ -53,7 +55,12 @@ public class FlightController {
         return ResponseEntity.ok(dto);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/passenger-list/{id}")
+    public ResponseEntity<List<UserDTO>> findPassengerList(@PathVariable Long id) {
+        List<UserDTO> dto = flightService.findPassengerList(id);
+        return ResponseEntity.ok(dto);
+    }
+
     @PostMapping
     public ResponseEntity<FlightDTO> insert(@Valid @RequestBody FlightDTO dto) {
         dto = flightService.insert(dto);
@@ -61,14 +68,12 @@ public class FlightController {
         return ResponseEntity.created(uri).body(dto);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<FlightDTO> update(@PathVariable Long id, @Valid @RequestBody FlightDTO dto) {
         dto = flightService.update(id, dto);
         return ResponseEntity.ok(dto);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         flightService.delete(id);

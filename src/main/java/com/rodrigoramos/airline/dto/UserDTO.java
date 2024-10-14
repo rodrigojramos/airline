@@ -1,9 +1,14 @@
 package com.rodrigoramos.airline.dto;
 
 import com.rodrigoramos.airline.entities.User;
+import com.rodrigoramos.airline.projections.PassengerListProjection;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDTO {
 
@@ -14,6 +19,8 @@ public class UserDTO {
     private String email;
     @CPF
     private String document;
+
+    private List<String> roles = new ArrayList<>();
 
     public UserDTO(Long id, String name, String email, String document) {
         this.id = id;
@@ -27,6 +34,14 @@ public class UserDTO {
         name = entity.getName();
         email = entity.getEmail();
         document = entity.getDocument();
+        for (GrantedAuthority role: entity.getRoles()) {
+            roles.add(role.getAuthority());
+        }
+    }
+
+    public UserDTO(PassengerListProjection projection) {
+        name = projection.getName();
+        document = projection.getDocument();
     }
 
     public Long getId() {
@@ -43,5 +58,9 @@ public class UserDTO {
 
     public String getDocument() {
         return document;
+    }
+
+    public List<String> getRoles() {
+        return roles;
     }
 }

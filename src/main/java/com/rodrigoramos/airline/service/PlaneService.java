@@ -11,6 +11,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class PlaneService {
 
@@ -22,6 +24,11 @@ public class PlaneService {
         Plane plane = planeRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado"));
         return new PlaneDTO(plane);
+    }
+
+    public List<PlaneDTO> findAll() {
+        List<Plane> result = planeRepository.findAll();
+         return result.stream().map(x -> new PlaneDTO(x)).toList();
     }
 
     @Transactional

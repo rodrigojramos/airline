@@ -12,7 +12,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/ticket")
+@RequestMapping(value = "/client-area")
 public class TicketController {
 
     @Autowired
@@ -23,6 +23,18 @@ public class TicketController {
     public ResponseEntity<TicketDTO> findById(@PathVariable Long id) {
         TicketDTO dto = ticketService.findById(id);
         return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TicketDTO>> findTicketsByUserId(@RequestParam Long userId) {
+        List<TicketDTO> tickets = ticketService.findTicketsByUserId(userId);
+        return ResponseEntity.ok(tickets);
+    }
+
+    @GetMapping("occupied-seats/{flightId}")
+    public ResponseEntity<List<String>> findOccupiedSeatsByFlightId(@PathVariable Long flightId) {
+        List<String> occupiedSeats = ticketService.findOccupiedSeatsByFlightId(flightId);
+        return ResponseEntity.ok(occupiedSeats);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")

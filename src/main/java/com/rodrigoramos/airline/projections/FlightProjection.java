@@ -1,7 +1,5 @@
 package com.rodrigoramos.airline.projections;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.time.LocalDateTime;
 
 public interface FlightProjection {
@@ -10,5 +8,6 @@ public interface FlightProjection {
     String getDeparture();
     String getArrival();
     LocalDateTime getFlightDay();
+    Integer getAvailableSeats();
 
 }

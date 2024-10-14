@@ -86,6 +86,10 @@ public class Flight {
         this.availableSeats = availableSeats;
     }
 
+    public void toDecreaseAvailableSeats() {
+        this.availableSeats = availableSeats - 1;
+    }
+
     public Plane getPlane() {
         return plane;
     }

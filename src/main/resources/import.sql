@@ -61,6 +61,7 @@ INSERT INTO tb_flight(departure, arrival, flight_day, price, available_seats, pl
 INSERT INTO tb_flight(departure, arrival, flight_day, price, available_seats, plane_id) VALUES ('São Paulo', 'Uberlândia', '2024-12-10T19:30:00Z', 550.0, 24, 2);
 INSERT INTO tb_flight(departure, arrival, flight_day, price, available_seats, plane_id) VALUES ('São Paulo', 'Uberlândia', '2024-12-10T12:30:00Z', 650.0, 24, 2);
 INSERT INTO tb_flight(departure, arrival, flight_day, price, available_seats, plane_id) VALUES ('São Paulo', 'Uberlândia', '2024-12-10T15:30:00Z', 750.0, 24, 2);
+INSERT INTO tb_flight(departure, arrival, flight_day, price, available_seats, plane_id) VALUES ('Uberlândia', 'Salvador', '2024-10-14T12:30:00Z', 630.0, 32, 3);
 
 
 

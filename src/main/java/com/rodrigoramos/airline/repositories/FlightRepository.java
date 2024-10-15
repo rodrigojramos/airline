@@ -9,11 +9,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface FlightRepository extends JpaRepository<Flight, Long> {
 
     Page<Flight> findAllByOrderByFlightDayAsc(Pageable pageable);
+
+    List<Flight> findByFlightDayBefore(LocalDateTime cutoffDate);
 
     @Query("SELECT obj FROM Flight obj WHERE obj.departure = :departure AND obj.arrival = :arrival AND EXTRACT(DAY FROM obj.flightDay) = :d AND EXTRACT(MONTH FROM obj.flightDay) = :m AND EXTRACT(YEAR FROM obj.flightDay) = :y ORDER BY obj.flightDay")
     List<Flight> searchFlightByDateAndDestination(String departure, String arrival, Integer d, Integer m, Integer y);

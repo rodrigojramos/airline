@@ -5,9 +5,11 @@ import com.rodrigoramos.airline.dto.TicketDTO;
 import com.rodrigoramos.airline.entities.Flight;
 import com.rodrigoramos.airline.entities.User;
 import com.rodrigoramos.airline.entities.Ticket;
+import com.rodrigoramos.airline.repositories.DuplicateTicketException;
 import com.rodrigoramos.airline.repositories.FlightRepository;
 import com.rodrigoramos.airline.repositories.TicketRepository;
 import com.rodrigoramos.airline.service.exceptions.DatabaseException;
+import com.rodrigoramos.airline.service.exceptions.NoAvailableSeatsException;
 import com.rodrigoramos.airline.service.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +51,17 @@ public class TicketService {
         copyDtoToEntity(dto, entity);
 
         for (Flight flight : entity.getFlights()) {
+
+            boolean exists = ticketRepository.existsByUserIdAndFlightsId(entity.getPassenger().getId(), flight.getId());
+            if (exists) {
+                throw new DuplicateTicketException("O usuário já possui um ticket para o voo ");
+            }
+
             if (flight.getAvailableSeats() == null) {
-                throw new IllegalStateException("Error: " + flight.getId());
+                throw new NoAvailableSeatsException("Assentos disponíveis não podem ser nulos para o voo");
             }
             if (flight.getAvailableSeats() <= 0) {
-                throw new IllegalStateException("Não há assentos disponíveis para voo " + flight.getId());
+                throw new NoAvailableSeatsException("Não há assentos disponíveis para voo");
             }
         }
 

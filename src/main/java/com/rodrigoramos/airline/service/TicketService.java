@@ -41,6 +41,12 @@ public class TicketService {
         return tickets.stream().map(ticket -> new TicketDTO(ticket)).toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<TicketDTO> findTicketsByFlightId(Long flightId) {
+        List<Ticket> tickets = ticketRepository.findTicketsByFlightId(flightId);
+        return tickets.stream().map(ticket -> new TicketDTO(ticket)).toList();
+    }
+
     public List<String> findOccupiedSeatsByFlightId(Long flightId) {
         return ticketRepository.findOccupiedSeatsByFlightId(flightId);
     }

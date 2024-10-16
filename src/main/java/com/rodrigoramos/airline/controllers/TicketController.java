@@ -31,6 +31,12 @@ public class TicketController {
         return ResponseEntity.ok(tickets);
     }
 
+    @GetMapping("/tickets/{flightId}")
+    public ResponseEntity<List<TicketDTO>> findTicketsByFlightId(@PathVariable Long flightId) {
+        List<TicketDTO> tickets = ticketService.findTicketsByFlightId(flightId);
+        return ResponseEntity.ok(tickets);
+    }
+
     @GetMapping("occupied-seats/{flightId}")
     public ResponseEntity<List<String>> findOccupiedSeatsByFlightId(@PathVariable Long flightId) {
         List<String> occupiedSeats = ticketService.findOccupiedSeatsByFlightId(flightId);

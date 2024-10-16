@@ -13,6 +13,9 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     boolean existsByUserIdAndFlightsId(Long userId, Long flightId);
 
+    @Query("SELECT t FROM Ticket t JOIN t.flights f WHERE f.id = :flightId")
+    List<Ticket> findTicketsByFlightId(@Param("flightId") Long flightId);
+
     @Query("SELECT t.seat FROM Ticket t JOIN t.flights f WHERE f.id = :flightId")
     List<String> findOccupiedSeatsByFlightId(@Param("flightId") Long flightId);
 }

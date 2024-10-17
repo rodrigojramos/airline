@@ -31,7 +31,7 @@ public class PlaneController {
         return ResponseEntity.ok(dto);
     }
 
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<PlaneDTO> insert(@Valid @RequestBody PlaneDTO dto) {
         dto = planeService.insert(dto);
@@ -40,6 +40,7 @@ public class PlaneController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<PlaneDTO> update(@PathVariable Long id, @Valid @RequestBody PlaneDTO dto) {
         dto = planeService.update(id, dto);

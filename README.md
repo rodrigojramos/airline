@@ -33,7 +33,7 @@ Esta aplicação backend foi projetada para ser a API de um sistema de reservas 
 
 - **Java 17+**
 - **Maven**
-- **PostgreSQL** (configurar as credenciais no arquivo `application.properties`)
+- **PostgreSQL**
   
 ### Instalação e Execução
 
@@ -76,6 +76,7 @@ Caso você deseje utilizar o PostgreSQL em vez do H2:
    spring.jpa.properties.jakarta.persistence.schema-generation.scripts.create-target=create.sql
    spring.jpa.properties.hibernate.hbm2ddl.delimiter=;
   Essas configurações permitem gerar automaticamente um arquivo create.sql com as instruções de criação do banco de dados. Ele será salvo na pasta src/main/resources. Após isso volte a comentar estás linhas.
+
 4. Importação de Dados
    - Certifique-se de que o PostgreSQL está em execução (verifique com docker-compose ps) e acessível pela porta configurada no docker-compose.yml (5432).
    - Conecte-se ao banco de dados usando as credenciais configuradas no docker-compose.yml:

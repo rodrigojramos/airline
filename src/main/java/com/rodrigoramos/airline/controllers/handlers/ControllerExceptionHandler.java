@@ -2,7 +2,7 @@ package com.rodrigoramos.airline.controllers.handlers;
 
 import com.rodrigoramos.airline.dto.CustomError;
 import com.rodrigoramos.airline.dto.ValidationError;
-import com.rodrigoramos.airline.repositories.DuplicateTicketException;
+import com.rodrigoramos.airline.service.exceptions.DuplicateTicketException;
 import com.rodrigoramos.airline.service.exceptions.DatabaseException;
 import com.rodrigoramos.airline.service.exceptions.NoAvailableSeatsException;
 import com.rodrigoramos.airline.service.exceptions.ResourceNotFoundException;

@@ -5,7 +5,7 @@ import com.rodrigoramos.airline.dto.TicketDTO;
 import com.rodrigoramos.airline.entities.Flight;
 import com.rodrigoramos.airline.entities.User;
 import com.rodrigoramos.airline.entities.Ticket;
-import com.rodrigoramos.airline.repositories.DuplicateTicketException;
+import com.rodrigoramos.airline.service.exceptions.DuplicateTicketException;
 import com.rodrigoramos.airline.repositories.FlightRepository;
 import com.rodrigoramos.airline.repositories.TicketRepository;
 import com.rodrigoramos.airline.service.exceptions.DatabaseException;
